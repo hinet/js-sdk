@@ -22,5 +22,8 @@
   "homepage": "https://github.com/hinet/js-sdk#readme",
   "dependencies": {
     "whatwg-fetch": "^2.0.3"
+  },
+  "devDependencies": {
+    "gulp-minify": "0.0.15"
   }
 }
