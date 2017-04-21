@@ -47,27 +47,31 @@
 	        }
 	    };
 	}
+	global.addEventListener("message",function(event){
+			var data = event.data;
+			global.callback(data.code,data.message);
+	}, false);
 
 	function JuneJsSDK() {
 		var _self = this;
-		this.ajax = function(){
-			var ajax;
-            if (ie && ie <= 9) {
-                ajax = new moxie.xhr.XMLHttpRequest();
-                moxie.core.utils.Env.swf_url = op.flash_swf_url;
-            }else{
-                ajax = that.createAjax();
+		/**
+         * trim space beside text
+         * @param  {String} untrimed string
+         * @return {String} trimed string
+         */
+        this.trim = function(text) {
+            return text === null ? "" : text.replace(/^\s+|\s+$/g, '');
+        };
+        this.pay = function (data,callback) {
+
+            if(!data.open_id || !data.access_token || !data.order_id || !data.title || !data.total_fee || !data.sign){
+                return '9';//支付参数错误
             }
-		}
-		this.createAjax = function(argument) {
-	        var xmlhttp = {};
-	        if (window.XMLHttpRequest) {
-	            xmlhttp = new XMLHttpRequest();
-	        } else {
-	            xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
-	        }
-	        return xmlhttp;
-	    };
+            global.callback = callback;
+            window.parent.postMessage(data, "*");
+            
+        }
+		
 	}
 	
 	var June = new JuneJsSDK();
